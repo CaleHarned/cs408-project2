@@ -93,11 +93,12 @@ public class CrosswordViewModel extends ViewModel {
             // Place word letters into Letters array
 
             for (int i = 0; i < word.getWord().length(); i++) {
-                letters.getValue()[row][column] = BLANK_CHAR;
                 if (word.getDirection().equals(Word.DOWN)) {
+                    letters.getValue()[row][column] = BLANK_CHAR;
                     row++;
                 }
                 if (word.getDirection().equals(Word.ACROSS)) {
+                    letters.getValue()[row][column] = BLANK_CHAR;
                     column++;
                 }
             }
@@ -105,6 +106,7 @@ public class CrosswordViewModel extends ViewModel {
         }
 
     // Add All Words to Grid (for testing only!)
+
 
     private void addAllWordsToGrid() {
         for (Map.Entry<String, Word> e : words.getValue().entrySet()) {
