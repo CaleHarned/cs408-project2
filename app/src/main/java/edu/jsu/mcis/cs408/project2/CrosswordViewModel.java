@@ -76,29 +76,33 @@ public class CrosswordViewModel extends ViewModel {
 
     private void addWordToGrid(String key) {
 
-        // Get Word from collection (look up using the given key)
+            // Get Word from collection (look up using the given key)
 
-        Word word = words.getValue().get(key);
+            Word word = words.getValue().get(key);
 
-        // Get Word Properties
+            // Get Word Properties
 
-        int row = word.getRow();
-        int column = word.getColumn();
-        int box = word.getBox();
+            int row = word.getRow();
+            int column = word.getColumn();
+            int box = word.getBox();
 
-        // Place box number into Numbers array
+            // Place box number into Numbers array
 
-        numbers.getValue()[row][column] = box;
+            numbers.getValue()[row][column] = box;
 
-        // Place word letters into Letters array
+            // Place word letters into Letters array
 
-        /*
+            for (int i = 0; i < word.getWord().length(); i++) {
+                letters.getValue()[row][column] = BLANK_CHAR;
+                if (word.getDirection().equals(Word.DOWN)) {
+                    row++;
+                }
+                if (word.getDirection().equals(Word.ACROSS)) {
+                    column++;
+                }
+            }
 
-            INSERT YOUR CODE HERE
-
-         */
-
-    }
+        }
 
     // Add All Words to Grid (for testing only!)
 
