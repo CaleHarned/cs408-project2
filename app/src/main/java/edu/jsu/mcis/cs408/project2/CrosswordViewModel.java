@@ -104,7 +104,36 @@ public class CrosswordViewModel extends ViewModel {
             }
 
         }
+    void showWordOnGrid(String key) {
 
+        // Get Word from collection (look up using the given key)
+
+        Word word = words.getValue().get(key);
+
+        // Get Word Properties
+
+        int row = word.getRow();
+        int column = word.getColumn();
+        int box = word.getBox();
+
+        // Place box number into Numbers array
+
+        numbers.getValue()[row][column] = box;
+
+        // Place word letters into Letters array
+
+        for (int i = 0; i < word.getWord().length(); i++) {
+            if (word.getDirection().equals(Word.DOWN)) {
+                letters.getValue()[row][column] = word.getWord().charAt(i);
+                row++;
+            }
+            if (word.getDirection().equals(Word.ACROSS)) {
+                letters.getValue()[row][column] = word.getWord().charAt(i);
+                column++;
+            }
+        }
+
+    }
     // Add All Words to Grid (for testing only!)
 
 
@@ -112,6 +141,19 @@ public class CrosswordViewModel extends ViewModel {
         for (Map.Entry<String, Word> e : words.getValue().entrySet()) {
             addWordToGrid( e.getKey() );
         }
+    }
+
+    public String getWord(int number, String direction){
+        String key = String.valueOf(number) + direction;
+        if(words.getValue().get(key) != null){
+            return words.getValue().get(key).getWord();
+        }
+        else {
+            return null;
+        }
+    }
+    public int getNumber(int row, int column){
+        return numbers.getValue() [row][column];
     }
 
     // Load Words from Puzzle Data File ("puzzle.csv")

@@ -1,5 +1,7 @@
 package edu.jsu.mcis.cs408.project2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -8,11 +10,13 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ public class PuzzleFragment extends Fragment implements TabFragment {
     private View root;
     private ConstraintLayout layout;
     private ConstraintSet set;
+    private String userInput;
 
     public PuzzleFragment() {
         // Required empty public constructor
@@ -87,6 +92,9 @@ public class PuzzleFragment extends Fragment implements TabFragment {
 
     }
 
+
+
+
     public void onClick(View v) {
 
         // Get Row/Column of Tapped Square
@@ -94,11 +102,45 @@ public class PuzzleFragment extends Fragment implements TabFragment {
         String[] fields = v.getTag().toString().trim().split(",");
         int row = Integer.parseInt(fields[0]);
         int col = Integer.parseInt(fields[1]);
+        int box = model.getNumber(row, col);
 
         // Display Toast
 
         String message = row + "/" + col;
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Enter Word Guess");
+        builder.setMessage("Enter guess for either across or down:");
+        final EditText input = new EditText(this.getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int i) {
+                userInput= input.getText().toString().toUpperCase();
+
+                String wordAcross = model.getWord(box,"A");
+                String wordDown = model.getWord(box,"D");
+
+                if(userInput.equals(wordAcross)){
+                    model.showWordOnGrid(String.valueOf(box) + "A");
+                    updateGrid();
+                }
+                if(userInput.equals(wordDown)){
+                    model.showWordOnGrid(String.valueOf(box) + "D");
+                    updateGrid();
+                }
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface d, int i) {
+                userInput= "";
+                d.cancel();
+            }
+        });
+        AlertDialog aboutDialog= builder.show();
+
 
     }
 
@@ -199,6 +241,9 @@ public class PuzzleFragment extends Fragment implements TabFragment {
                 }
             }
         }
+
+
+
 
     }
 
