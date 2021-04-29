@@ -32,6 +32,8 @@ public class CrosswordViewModel extends ViewModel {
     private final MutableLiveData<String> cluesAcross = new MutableLiveData<String>();
     private final MutableLiveData<String> cluesDown = new MutableLiveData<String>();
 
+    private boolean gameEnd;
+
     // Initialize Shared Model
 
     public void init(Context context) {
@@ -141,6 +143,18 @@ public class CrosswordViewModel extends ViewModel {
         for (Map.Entry<String, Word> e : words.getValue().entrySet()) {
             addWordToGrid( e.getKey() );
         }
+    }
+    public boolean hasGameEnded(){
+        gameEnd = true;
+        for(int i = 0; i < letters.getValue().length; ++i){
+            for(int j = 0; j < letters.getValue()[i].length; ++j){
+                if(letters.getValue()[i][j] == BLANK_CHAR){
+                    gameEnd = false;
+                    break;
+                }
+            }
+        }
+        return gameEnd;
     }
 
     public String getWord(int number, String direction){

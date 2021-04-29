@@ -141,6 +141,10 @@ public class PuzzleFragment extends Fragment implements TabFragment {
         });
         AlertDialog aboutDialog= builder.show();
 
+        if(model.hasGameEnded()){
+
+            Toast.makeText(getActivity(), "Congratulations, You have completed the puzzle ", Toast.LENGTH_LONG).show();
+        }
 
     }
 
